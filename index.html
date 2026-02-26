@@ -1,449 +1,1441 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Pesanan Ts</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-color: #F7F5EB; 
-            --primary-green: #3B5341; 
-            --gold: #C5A059; 
-            --text-dark: #2C3E2D;
-            --text-light: #F7F5EB;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1A2B1F">
+<title>Undangan Pernikahan — Ahmad & Siti</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+<!-- Preconnect untuk performa font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- Font Awesome subset CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 
-        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
-        .arabic { font-family: 'Amiri', serif; font-size: 1.8rem; text-align: center; }
+<style>
+/* ══════════════════════════════════════
+   TOKENS
+══════════════════════════════════════ */
+:root{
+  --bg:#F9F6ED; --bg-alt:#EEE9D8;
+  --green:#2D4A36; --green-mid:#3B5E47;
+  --gold:#B8913A; --gold-l:#D4B06A; --gold-p:#EDD99A;
+  --dark:#1A2B1F; --text:#2C3A2E; --muted:#5A6E5C;
+  --a1:#8B2020; --a2:#D4A017; --a3:#5C1A1A;
+  --b1:#5C3D1A; --b2:#1A3A5C; --b3:#2E3A6E;
+  --r: .6rem; /* base radius for cards */
+  --ease: cubic-bezier(.4,0,.2,1);
+}
 
-        /* Background Motif Dasar */
-        .bg-pattern {
-            background-image: radial-gradient(var(--gold) 1px, transparent 1px);
-            background-size: 30px 30px;
-            opacity: 0.1;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-        }
+/* ══════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Jost',system-ui,sans-serif;
+  background:var(--bg); color:var(--text);
+  overflow-x:hidden; font-weight:300;
+  line-height:1.6;
+}
+img{max-width:100%;height:auto;display:block}
+svg{overflow:visible}
 
-        /* Aksen Banjar & Jawa */
-        .aksen-banjar { position: relative; z-index: 1; }
-        .aksen-banjar::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: linear-gradient(45deg, rgba(197, 160, 89, 0.05) 25%, transparent 25%, transparent 75%, rgba(197, 160, 89, 0.05) 75%, rgba(197, 160, 89, 0.05)), 
-                              linear-gradient(45deg, rgba(197, 160, 89, 0.05) 25%, transparent 25%, transparent 75%, rgba(197, 160, 89, 0.05) 75%, rgba(197, 160, 89, 0.05));
-            background-size: 20px 20px; background-position: 0 0, 10px 10px;
-            z-index: -1; border-radius: inherit;
-        }
+/* ══════════════════════════════════════
+   NOISE OVERLAY (cheap texture, fixed)
+══════════════════════════════════════ */
+body::after{
+  content:''; position:fixed; inset:0; pointer-events:none;
+  z-index:9998; opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");
+}
 
-        .aksen-jawa { position: relative; z-index: 1; }
-        .aksen-jawa::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: radial-gradient(circle at 10px 10px, rgba(197, 160, 89, 0.1) 10px, transparent 11px);
-            background-size: 20px 20px;
-            z-index: -1; border-radius: inherit;
-        }
+/* ══════════════════════════════════════
+   SCROLL PROGRESS
+══════════════════════════════════════ */
+#prog{
+  position:fixed;top:0;left:0;height:3px;width:0;
+  background:linear-gradient(90deg,var(--a1),var(--gold),var(--b2));
+  z-index:3000; transition:width .1s linear; will-change:width;
+}
 
-        section {
-            padding: 100px 20px;
-            min-height: 100vh;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center; position: relative;
-        }
+/* ══════════════════════════════════════
+   AUDIO BUTTON
+══════════════════════════════════════ */
+#audio-btn{
+  position:fixed;bottom:20px;right:20px;
+  width:50px;height:50px;border-radius:50%;
+  background:var(--green);border:2px solid var(--gold);
+  color:var(--gold-p);font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:2000;
+  box-shadow:0 6px 24px rgba(45,74,54,.5);
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+  /* touch target */
+  -webkit-tap-highlight-color:transparent;
+}
+#audio-btn:hover,#audio-btn:focus-visible{
+  transform:scale(1.1);
+  box-shadow:0 10px 32px rgba(184,145,58,.35);
+}
+#audio-btn.playing i{animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-        /* Cinematic Cover */
-        #cover {
-            position: relative;
-            color: var(--text-light);
-            overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
-        }
-        #cover::before {
-            content: '';
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(59, 83, 65, 0.8), rgba(59, 83, 65, 0.9)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1920&q=80') center/cover;
-            z-index: -1;
-            animation: bgZoom 25s infinite alternate linear;
-        }
-        @keyframes bgZoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
-        }
-        
-        .bismillah { font-size: 2.5rem; margin-bottom: 20px; color: var(--gold); }
-        .names { font-size: 4rem; margin: 20px 0; color: var(--gold); }
-        
-        .decor-box {
-            border: 2px solid var(--gold);
-            padding: 50px 30px;
-            border-radius: 15px 50px; 
-            background-color: #fff;
-            max-width: 650px; width: 100%;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
-            margin: 0 auto;
-        }
+/* ══════════════════════════════════════
+   REVEAL ANIMATIONS
+   (respects prefers-reduced-motion)
+══════════════════════════════════════ */
+.reveal{
+  opacity:0;
+  transition:opacity 1s var(--ease), transform 1s var(--ease);
+}
+.reveal.on{opacity:1!important;transform:none!important}
+.fu{transform:translateY(48px)}
+.fd{transform:translateY(-30px)}
+.fl{transform:translateX(40px)}
+.fr{transform:translateX(-40px)}
+.zi{transform:scale(.92)}
+.d1{transition-delay:.1s}.d2{transition-delay:.22s}
+.d3{transition-delay:.36s}.d4{transition-delay:.52s}
 
-        .event-container {
-            display: flex; flex-wrap: wrap; gap: 30px;
-            justify-content: center; width: 100%; max-width: 1000px; margin-top: 30px;
-        }
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
 
-        .event-card {
-            flex: 1; min-width: 300px;
-            border: 2px solid var(--gold); padding: 40px 20px;
-            border-radius: 15px 50px; background-color: #fff;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-        .event-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(197, 160, 89, 0.15);
-        }
+/* ══════════════════════════════════════
+   ORNAMENT LINE
+══════════════════════════════════════ */
+.orn{
+  display:flex;align-items:center;gap:10px;
+  justify-content:center;margin:14px 0;
+}
+.orn::before,.orn::after{
+  content:'';flex:1;max-width:70px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.orn-dot{
+  width:7px;height:7px;background:var(--gold);
+  border-radius:50%;position:relative;flex-shrink:0;
+}
+.orn-dot::before,.orn-dot::after{
+  content:'';position:absolute;width:4px;height:4px;
+  background:var(--gold-l);border-radius:50%;
+  top:50%;transform:translateY(-50%);
+}
+.orn-dot::before{right:calc(100% + 5px)}
+.orn-dot::after{left:calc(100% + 5px)}
 
-        /* Elegant Buttons */
-        .btn {
-            background-color: var(--primary-green); color: var(--text-light);
-            padding: 14px 30px; border: none; border-radius: 30px;
-            text-decoration: none; font-weight: 600; display: inline-flex;
-            align-items: center; justify-content: center; gap: 10px; margin-top: 20px;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer;
-        }
-        .btn:hover { background-color: var(--gold); color: var(--text-dark); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(197, 160, 89, 0.3);}
-        .btn-gold { background-color: var(--gold); color: var(--text-dark); }
-        .btn-gold:hover { background-color: var(--primary-green); color: var(--text-light); }
-        
-        /* Audio Control */
-        #audio-control {
-            position: fixed; bottom: 20px; right: 20px;
-            background: var(--gold); color: #fff;
-            width: 55px; height: 55px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            animation: spin 5s linear infinite; font-size: 1.2rem;
-        }
+.lbl{font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.ttl{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:300;
+  color:var(--green);line-height:1.2;
+}
 
-        /* ===== ELEGANT ANIMATION SYSTEM ===== */
-        .reveal { 
-            opacity: 0; 
-            /* Kurva transisi yang mulus dan elegan */
-            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-        }
-        .reveal.visible { opacity: 1; transform: translate(0, 0) scale(1); }
-        
-        .fade-up { transform: translateY(60px); }
-        .fade-down { transform: translateY(-40px); }
-        .fade-left { transform: translateX(50px); }
-        .fade-right { transform: translateX(-50px); }
-        .zoom-in { transform: scale(0.9); }
-        
-        /* Staggered Delays */
-        .delay-100 { transition-delay: 0.1s; }
-        .delay-200 { transition-delay: 0.2s; }
-        .delay-300 { transition-delay: 0.3s; }
-        .delay-400 { transition-delay: 0.4s; }
+/* ══════════════════════════════════════
+   SECTION 1 — COVER
+══════════════════════════════════════ */
+#cover{
+  min-height:100svh;display:flex;align-items:center;
+  justify-content:center;position:relative;overflow:hidden;color:#fff;
+}
+.cover-bg{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(160deg,#0F1E14 0%,#1E3525 50%,#0F1E14 100%),
+    url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1280&q=70&fm=webp') center/cover no-repeat;
+  background-blend-mode:multiply;
+  animation:kenb 30s ease-in-out infinite alternate;
+  will-change:transform;
+}
+@keyframes kenb{0%{transform:scale(1)}100%{transform:scale(1.1) translateX(-1.5%)}}
 
-        /* Continuous Animations */
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        
-        .icon-float { font-size: 3rem; color: var(--primary-green); animation: float 4s ease-in-out infinite; margin-bottom: 20px;}
-        .icon-pulse { font-size: 2.5rem; color: var(--gold); animation: pulse 3s infinite; margin-bottom: 15px;}
+/* Motif grid lines */
+.cover-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(184,145,58,.06) 0,rgba(184,145,58,.06) 1px,transparent 0,transparent 60px),
+    repeating-linear-gradient(90deg,rgba(184,145,58,.06) 0,rgba(184,145,58,.06) 1px,transparent 0,transparent 60px);
+}
 
-        /* Form & Slider */
-        input, textarea {
-            width: 100%; padding: 12px; margin: 10px 0;
-            border: 1px solid rgba(197, 160, 89, 0.4); border-radius: 8px;
-            font-family: 'Poppins', sans-serif; transition: 0.3s;
-        }
-        input:focus, textarea:focus { outline: none; border-color: var(--primary-green); box-shadow: 0 0 8px rgba(59, 83, 65, 0.2); }
+/* Animated border strips (left/right) */
+.cover-strip{position:absolute;top:0;bottom:0;width:6px;z-index:2}
+.cover-strip.l{left:0}
+.cover-strip.r{right:0}
+.cover-strip-inner{
+  height:200%;
+  background:repeating-linear-gradient(
+    180deg,
+    var(--a1) 0,var(--a1) 10px,
+    var(--a2) 10px,var(--a2) 20px,
+    var(--a3) 20px,var(--a3) 30px,
+    var(--gold) 30px,var(--gold) 40px,
+    var(--b2) 40px,var(--b2) 50px,
+    var(--b1) 50px,var(--b1) 60px,
+    var(--gold) 60px,var(--gold) 70px,
+    var(--green) 70px,var(--green) 80px
+  );
+  animation:stripDown 10s linear infinite;
+}
+.cover-strip.r .cover-strip-inner{animation-direction:reverse}
+@keyframes stripDown{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
 
-        .slider-wrapper {
-            position: relative; max-width: 700px; width: 100%; margin: auto;
-            background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--gold);
-            border-radius: 20px; padding: 40px 50px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .slide { display: none; animation: fadeSlide 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .slide.active { display: block; }
-        @keyframes fadeSlide { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
-        
-        .prev, .next {
-            cursor: pointer; position: absolute; top: 50%; width: auto; padding: 16px; margin-top: -22px;
-            color: var(--gold); font-weight: bold; font-size: 24px; transition: 0.3s ease; background: none; border: none;
-        }
-        .next { right: 10px; } .prev { left: 10px; }
-        .prev:hover, .next:hover { color: var(--text-light); transform: scale(1.2); }
-        
-        .mt-4 { margin-top: 1.5rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .divider { width: 50px; height: 3px; background: var(--gold); margin: 20px auto; border-radius: 5px; }
-        
-        @media (max-width: 768px) {
-            .names { font-size: 3rem; }
-            section { padding: 80px 15px; }
-            .decor-box, .event-card { padding: 30px 20px; }
-            .slider-wrapper { padding: 30px 20px; }
-            .prev, .next { padding: 8px; font-size: 18px; }
-        }
-    </style>
+/* Top / bottom kawung stripe */
+.cover-stripe{
+  position:absolute;left:0;right:0;height:70px;
+  pointer-events:none;z-index:2;opacity:.55;
+}
+.cover-stripe.top{top:0}
+.cover-stripe.bot{bottom:0}
+
+/* Rings */
+.cover-ring{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(184,145,58,.18);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.cover-ring.r1{width:min(680px,90vw);height:min(680px,90vw)}
+.cover-ring.r2{width:min(520px,70vw);height:min(520px,70vw)}
+.cover-ring.r3{
+  width:min(360px,55vw);height:min(360px,55vw);
+  border-style:dashed;border-color:rgba(184,145,58,.1);
+  animation:rotateSlow 50s linear infinite;
+}
+@keyframes rotateSlow{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* Floating blobs */
+.blob{
+  position:absolute;border-radius:50%;
+  background:rgba(184,145,58,.12);pointer-events:none;
+  animation:blob var(--d,8s) ease-in-out infinite;
+  will-change:transform;
+}
+@keyframes blob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-24px) scale(1.06)}}
+
+/* Inner content */
+.cover-inner{
+  position:relative;z-index:4;text-align:center;
+  padding:clamp(20px,5vw,40px) clamp(16px,5vw,40px);
+  max-width:600px;width:100%;
+}
+.bismillah{
+  font-family:'Amiri',serif;font-size:clamp(1.8rem,5vw,2.6rem);
+  color:var(--gold-p);line-height:1.6;margin-bottom:22px;
+}
+.cover-badge{
+  display:inline-block;border:1px solid rgba(184,145,58,.45);
+  padding:5px 20px;font-size:.65rem;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--gold-l);margin-bottom:16px;
+}
+.cover-names{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.8rem,9vw,5.2rem);font-weight:300;
+  color:#fff;line-height:1.05;
+}
+.cover-names .ng{color:var(--gold-l);font-style:italic}
+.cover-and{
+  display:block;font-family:'Amiri',serif;
+  font-size:clamp(1.6rem,4vw,2.2rem);color:var(--gold);margin:6px 0;
+}
+.cover-date{
+  font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-top:18px;
+}
+.btn-open{
+  display:inline-block;margin-top:30px;
+  padding:clamp(12px,2vw,15px) clamp(28px,5vw,48px);
+  border:1px solid rgba(184,145,58,.7);color:var(--gold-p);
+  font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;
+  text-decoration:none;background:transparent;
+  position:relative;overflow:hidden;transition:color .4s var(--ease);
+  cursor:pointer;
+}
+.btn-open::before{
+  content:'';position:absolute;inset:0;
+  background:var(--gold);transform:translateX(-101%);
+  transition:transform .4s var(--ease);
+}
+.btn-open span{position:relative;z-index:1}
+.btn-open:hover,.btn-open:focus-visible{color:var(--dark)}
+.btn-open:hover::before,.btn-open:focus-visible::before{transform:translateX(0)}
+
+/* Scroll hint */
+.scroll-hint{
+  position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  color:rgba(255,255,255,.3);font-size:.58rem;letter-spacing:.2em;
+  text-transform:uppercase;z-index:4;pointer-events:none;
+}
+.scroll-mouse{
+  width:20px;height:32px;border:1px solid rgba(184,145,58,.35);
+  border-radius:10px;display:flex;justify-content:center;padding-top:5px;
+}
+.scroll-mouse::before{
+  content:'';width:3px;height:7px;background:var(--gold);
+  border-radius:2px;animation:mscroll 2s ease infinite;
+}
+@keyframes mscroll{0%,100%{transform:translateY(0);opacity:1}80%{transform:translateY(9px);opacity:0}}
+
+/* ══════════════════════════════════════
+   WAVE DIVIDERS
+══════════════════════════════════════ */
+.wave-div{width:100%;overflow:hidden;line-height:0;display:block}
+.wave-div svg{display:block;width:100%}
+
+/* ══════════════════════════════════════
+   SECTION 2 — AYAT
+══════════════════════════════════════ */
+#quotes{
+  padding:clamp(60px,10vw,100px) clamp(16px,5vw,40px);
+  display:flex;justify-content:center;align-items:center;
+  flex-direction:column;background:var(--bg);
+  position:relative;overflow:hidden;
+}
+/* Subtle scattered flower bg */
+.flower-bg{position:absolute;inset:0;pointer-events:none;opacity:.045;overflow:hidden}
+
+.ayat-card{
+  max-width:680px;width:100%;text-align:center;
+  padding:clamp(36px,6vw,60px) clamp(22px,6vw,52px);
+  background:#fff;position:relative;
+  box-shadow:0 24px 70px rgba(45,74,54,.08);
+  border:1px solid rgba(184,145,58,.2);
+}
+.ayat-card::before{
+  content:'';position:absolute;inset:7px;
+  border:1px solid rgba(184,145,58,.1);pointer-events:none;
+}
+/* Corner ornaments */
+.co{position:absolute;width:34px;height:34px;pointer-events:none}
+.co.tl{top:-1px;left:-1px}
+.co.tr{top:-1px;right:-1px;transform:scaleX(-1)}
+.co.bl{bottom:-1px;left:-1px;transform:scaleY(-1)}
+.co.br{bottom:-1px;right:-1px;transform:scale(-1)}
+
+.ayat-ar{
+  font-family:'Amiri',serif;font-size:clamp(1.6rem,4vw,2rem);
+  line-height:2;color:var(--green);margin-bottom:22px;direction:rtl;
+}
+.ayat-tr{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(.95rem,2vw,1.08rem);color:var(--muted);line-height:1.85;
+}
+.ayat-ref{
+  display:inline-block;margin-top:18px;padding:4px 16px;
+  background:var(--green);color:var(--gold-p);
+  font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+}
+
+/* ══════════════════════════════════════
+   MOTIF BANNER A (dark maroon)
+══════════════════════════════════════ */
+#banner-a{
+  padding:clamp(44px,7vw,64px) clamp(16px,5vw,40px);
+  text-align:center;background:var(--a3);
+  position:relative;overflow:hidden;
+}
+.banner-motif-svg{
+  position:absolute;inset:0;pointer-events:none;opacity:.12
+}
+.banner-title{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,3vw,1.2rem);
+  font-style:italic;color:var(--gold-p);letter-spacing:.1em;
+  position:relative;z-index:2;
+}
+
+/* ══════════════════════════════════════
+   SECTION 3 — MEMPELAI
+══════════════════════════════════════ */
+#couple{
+  padding:clamp(60px,10vw,100px) clamp(16px,5vw,40px);
+  text-align:center;background:var(--bg-alt);
+  position:relative;overflow:hidden;
+}
+.tile-bg{position:absolute;inset:0;pointer-events:none;opacity:.04}
+
+.couple-grid{
+  display:flex;flex-wrap:wrap;gap:clamp(24px,5vw,48px);
+  justify-content:center;align-items:center;
+  margin-top:clamp(40px,7vw,64px);
+  max-width:860px;margin-left:auto;margin-right:auto;
+}
+.person-card{flex:1;min-width:220px;max-width:290px;text-align:center}
+.photo-wrap{width:148px;height:148px;margin:0 auto 22px;position:relative}
+.photo-ring{
+  position:absolute;inset:-13px;border-radius:50%;
+  border:1px solid rgba(184,145,58,.3);pointer-events:none;
+}
+.photo-ring::before{
+  content:'';position:absolute;inset:7px;border-radius:50%;
+  border:1px dashed rgba(184,145,58,.18);
+  animation:rotateSlow 24s linear infinite;
+}
+.photo-bg{
+  width:100%;height:100%;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.photo-bg.pa{background:linear-gradient(135deg,var(--a3),var(--a1) 60%,#A33)}
+.photo-bg.pb{background:linear-gradient(135deg,var(--b1),var(--b2) 60%,var(--b3))}
+.photo-bg::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 30%,rgba(237,217,154,.22),transparent 60%);
+}
+.pname{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1.35rem,3vw,1.65rem);
+  font-weight:400;color:var(--green);font-style:italic;
+}
+.ppar{font-size:.8rem;color:var(--muted);line-height:1.85;margin-top:7px}
+
+.heart-wrap{font-size:1.8rem;color:var(--gold);animation:hbeat 2.4s ease infinite}
+@keyframes hbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}45%{transform:scale(1.1)}}
+
+/* Ring SVG between names */
+.ring-svg{display:block;margin:10px auto 0}
+
+/* ══════════════════════════════════════
+   MOTIF BANNER B (sogan)
+══════════════════════════════════════ */
+#banner-b{
+  padding:clamp(44px,7vw,64px) clamp(16px,5vw,40px);
+  text-align:center;background:var(--b1);
+  position:relative;overflow:hidden;
+}
+
+/* ══════════════════════════════════════
+   SECTION 4 — EVENT
+══════════════════════════════════════ */
+#event{
+  padding:clamp(60px,10vw,100px) clamp(16px,5vw,40px);
+  text-align:center;background:var(--green);
+  position:relative;overflow:hidden;
+}
+#event::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(60deg,rgba(184,145,58,.04) 0,rgba(184,145,58,.04) 1px,transparent 0,transparent 44px),
+    repeating-linear-gradient(-60deg,rgba(184,145,58,.04) 0,rgba(184,145,58,.04) 1px,transparent 0,transparent 44px);
+}
+#event .ttl{color:var(--gold-p)}
+#event .lbl{color:rgba(212,176,106,.6)}
+
+.event-grid{
+  display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,32px);
+  justify-content:center;width:100%;max-width:1000px;
+  margin:clamp(36px,6vw,52px) auto 0;position:relative;z-index:1;
+}
+.event-card{
+  flex:1;min-width:min(300px,100%);
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(184,145,58,.28);
+  padding:clamp(36px,5vw,50px) clamp(22px,4vw,36px) clamp(32px,5vw,44px);
+  position:relative;text-align:center;
+  transition:transform .4s var(--ease),background .4s var(--ease);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+.event-card:hover,.event-card:focus-within{
+  transform:translateY(-8px);background:rgba(255,255,255,.08);
+}
+/* top shimmer line */
+.event-card::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:60%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+/* side accent bar */
+.event-card.ca::after{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:5px;
+  background:repeating-linear-gradient(
+    180deg,var(--a1) 0,var(--a1) 8px,var(--a2) 8px,var(--a2) 16px,
+    var(--a3) 16px,var(--a3) 24px,var(--gold) 24px,var(--gold) 32px
+  );
+}
+.event-card.cb::after{
+  content:'';position:absolute;top:0;right:0;bottom:0;width:5px;
+  background:repeating-linear-gradient(
+    180deg,var(--b1) 0,var(--b1) 8px,var(--b2) 8px,var(--b2) 16px,
+    var(--b3) 16px,var(--b3) 24px,var(--gold) 24px,var(--gold) 32px
+  );
+}
+.event-icon{font-size:1.9rem;color:var(--gold);margin-bottom:16px}
+.event-type{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3vw,1.8rem);
+  font-weight:300;color:var(--gold-p);font-style:italic;margin-bottom:12px;
+}
+.event-tag{
+  display:inline-block;padding:2px 12px;font-size:.6rem;
+  letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px;
+}
+.event-tag.ta{background:var(--a1);color:var(--gold-p)}
+.event-tag.tb{background:var(--b2);color:var(--gold-p)}
+
+.ev-div{width:36px;height:1px;background:rgba(184,145,58,.35);margin:0 auto 16px}
+
+.event-date{font-size:.95rem;font-weight:500;color:#fff;letter-spacing:.04em}
+.event-time{font-size:.74rem;color:rgba(255,255,255,.45);margin-top:4px;letter-spacing:.14em;text-transform:uppercase}
+.event-venue{margin-top:18px;padding-top:18px;border-top:1px solid rgba(184,145,58,.16)}
+.event-vname{font-size:.92rem;color:rgba(255,255,255,.84)}
+.event-vaddr{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:4px;line-height:1.65}
+
+/* Mini motif bar inside card */
+.mini-bar{display:block;width:80px;height:14px;margin:14px auto;border-radius:2px;overflow:hidden}
+
+.event-qr{margin-top:18px}
+.event-qr p{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:7px}
+.event-qr img{width:84px;border:2px solid rgba(184,145,58,.25);padding:3px;background:rgba(255,255,255,.04);margin:0 auto}
+
+.btn-map{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:18px;padding:9px 22px;font-size:.7rem;
+  letter-spacing:.18em;text-transform:uppercase;text-decoration:none;
+  color:var(--gold-l);border:1px solid rgba(184,145,58,.32);
+  transition:all .3s var(--ease);position:relative;overflow:hidden;
+}
+.btn-map::before{
+  content:'';position:absolute;inset:0;
+  background:rgba(184,145,58,.12);transform:scaleX(0);
+  transform-origin:left;transition:transform .3s var(--ease);
+}
+.btn-map:hover::before,.btn-map:focus-visible::before{transform:scaleX(1)}
+.btn-map:hover,.btn-map:focus-visible{color:var(--gold-p)}
+.btn-map span{position:relative}
+
+/* ══════════════════════════════════════
+   SECTION 5 — NASIHAT
+══════════════════════════════════════ */
+#nasihat{
+  padding:clamp(60px,10vw,100px) clamp(16px,5vw,40px);
+  text-align:center;background:var(--bg);position:relative;overflow:hidden;
+}
+/* star tile bg */
+.star-bg{position:absolute;inset:0;pointer-events:none;opacity:.04}
+
+/* Era tabs */
+
+
+.qslider{
+  max-width:660px;width:100%;margin:clamp(32px,5vw,50px) auto 0;
+  position:relative;z-index:1;
+}
+.qcard{
+  background:var(--green);padding:clamp(40px,6vw,62px) clamp(28px,5vw,52px);
+  position:relative;display:none;
+  animation:qin .8s var(--ease);
+}
+.qcard.on{display:block}
+@keyframes qin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* side accent stripes */
+.qcard::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:5px;
+  background:repeating-linear-gradient(
+    180deg,var(--a1) 0,var(--a1) 7px,var(--a2) 7px,var(--a2) 14px,
+    rgba(255,255,255,.12) 14px,rgba(255,255,255,.12) 21px,
+    var(--gold) 21px,var(--gold) 28px
+  );opacity:.65;
+}
+.qcard::after{
+  content:'';position:absolute;top:0;right:0;bottom:0;width:5px;
+  background:repeating-linear-gradient(
+    180deg,var(--b2) 0,var(--b2) 7px,var(--b1) 7px,var(--b1) 14px,
+    rgba(255,255,255,.12) 14px,rgba(255,255,255,.12) 21px,
+    var(--gold) 21px,var(--gold) 28px
+  );opacity:.65;
+}
+
+.qmark{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(5rem,8vw,7rem);
+  color:var(--gold);line-height:.4;opacity:.22;
+  position:absolute;top:28px;left:28px;
+  user-select:none;pointer-events:none;
+}
+
+
+.qtext{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1.05rem,2.5vw,1.22rem);
+  font-style:italic;color:rgba(249,246,237,.9);
+  line-height:1.95;position:relative;z-index:1;
+}
+.qsrc{
+  margin-top:24px;font-size:.66rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--gold-l);position:relative;z-index:1;
+}
+.qsrc small{
+  display:block;margin-top:4px;font-size:.6rem;
+  letter-spacing:.1em;opacity:.55;text-transform:none;
+}
+
+.qnav{
+  display:flex;justify-content:center;align-items:center;
+  gap:18px;margin-top:24px;
+}
+.qbtn{
+  width:36px;height:36px;border:1px solid var(--gold);background:none;
+  color:var(--gold);cursor:pointer;font-size:.85rem;
+  transition:all .3s var(--ease);display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.qbtn:hover,.qbtn:focus-visible{background:var(--gold);color:var(--dark)}
+.qdots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;max-width:200px}
+.qdot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(184,145,58,.28);cursor:pointer;
+  transition:background .3s,transform .3s;flex-shrink:0;
+}
+.qdot.on{background:var(--gold);transform:scale(1.35)}
+
+
+/* ══════════════════════════════════════
+   HERITAGE SEPARATOR
+══════════════════════════════════════ */
+.sep{padding:clamp(36px,6vw,52px) 20px;text-align:center;background:var(--bg-alt)}
+.sep-svg{display:block;width:100%;max-width:800px;height:auto;margin:0 auto;overflow:visible}
+
+/* ══════════════════════════════════════
+   SECTION 6 — HADIAH
+══════════════════════════════════════ */
+#gift{
+  padding:clamp(60px,10vw,100px) clamp(16px,5vw,40px);
+  text-align:center;background:var(--bg-alt);
+}
+.gift-card{
+  max-width:540px;width:100%;margin:clamp(36px,5vw,52px) auto 0;
+  background:#fff;padding:clamp(40px,6vw,60px) clamp(24px,5vw,44px);
+  position:relative;box-shadow:0 18px 50px rgba(45,74,54,.07);text-align:center;
+}
+.gift-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:5px;
+  background:linear-gradient(90deg,var(--a1) 0%,var(--a2) 25%,var(--gold) 50%,var(--b2) 75%,var(--b1) 100%);
+}
+.gift-ico{
+  width:68px;height:68px;border-radius:50%;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 26px;font-size:1.55rem;color:var(--gold-p);
+}
+.gift-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-style:italic;color:var(--green);margin-bottom:10px}
+.gift-desc{font-size:.82rem;color:var(--muted);line-height:1.85;max-width:380px;margin:0 auto 26px}
+.btn-wa{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:13px 32px;background:var(--green);color:var(--gold-p);
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  text-decoration:none;transition:all .3s var(--ease);
+}
+.btn-wa:hover,.btn-wa:focus-visible{
+  background:var(--gold);color:var(--dark);
+  transform:translateY(-2px);box-shadow:0 8px 22px rgba(184,145,58,.3);
+}
+
+/* ══════════════════════════════════════
+   SECTION 7 — BUKU TAMU
+══════════════════════════════════════ */
+#wishes{
+  padding:clamp(60px,10vw,100px) clamp(16px,5vw,40px);
+  text-align:center;background:var(--bg);
+}
+.wishes-wrap{max-width:620px;width:100%;margin:clamp(36px,5vw,52px) auto 0}
+.wish-form{
+  background:#fff;padding:clamp(36px,5vw,50px) clamp(22px,4vw,42px);
+  box-shadow:0 18px 50px rgba(45,74,54,.07);margin-bottom:20px;position:relative;
+}
+.wish-form::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:5px;
+  background:repeating-linear-gradient(
+    180deg,var(--a1) 0,var(--a1) 10px,var(--b2) 10px,var(--b2) 20px,
+    var(--gold) 20px,var(--gold) 30px,var(--green) 30px,var(--green) 40px
+  );
+}
+.wish-form input,.wish-form textarea{
+  width:100%;padding:13px 16px;
+  border:1px solid rgba(184,145,58,.2);background:var(--bg);
+  font-family:'Jost',sans-serif;font-size:.84rem;color:var(--text);
+  outline:none;margin-bottom:12px;border-radius:0;
+  transition:border-color .3s;
+  -webkit-appearance:none;appearance:none;
+}
+.wish-form input:focus,.wish-form textarea:focus{border-color:var(--gold)}
+.wish-form textarea{height:110px;resize:none}
+.btn-sub{
+  width:100%;padding:13px;background:var(--green);color:var(--gold-p);
+  border:none;font-family:'Jost',sans-serif;font-size:.7rem;
+  letter-spacing:.28em;text-transform:uppercase;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  transition:background .3s;
+}
+.btn-sub:hover,.btn-sub:focus-visible{background:var(--gold);color:var(--dark)}
+
+#wishes-list{
+  background:#fff;padding:clamp(20px,4vw,30px);
+  max-height:260px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--gold-l) transparent;
+}
+#wishes-list::-webkit-scrollbar{width:4px}
+#wishes-list::-webkit-scrollbar-thumb{background:var(--gold-l)}
+
+.wi{padding:14px 0;border-bottom:1px solid rgba(184,145,58,.1);text-align:left;animation:qin .5s}
+.wi:last-child{border-bottom:none}
+.wi-name{font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green);font-weight:500;margin-bottom:3px}
+.wi-msg{font-size:.83rem;color:var(--muted);line-height:1.75}
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer{
+  background:var(--dark);color:rgba(255,255,255,.3);
+  text-align:center;padding:clamp(36px,6vw,52px) 20px;
+  position:relative;overflow:hidden;
+}
+footer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--a1),var(--gold),var(--b2));
+}
+.footer-names{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-style:italic;color:var(--gold);margin-bottom:6px}
+footer p{font-size:.7rem;letter-spacing:.1em}
+.footer-tagline{margin-top:5px;font-size:.62rem!important;opacity:.55;letter-spacing:.15em!important}
+.footer-copy{margin-top:14px}
+
+/* ══════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+══════════════════════════════════════ */
+/* Large mobile / small tablet */
+@media(max-width:600px){
+  .cover-ring.r1{width:min(340px,88vw);height:min(340px,88vw)}
+  .cover-ring.r2{width:min(250px,68vw);height:min(250px,68vw)}
+  .cover-ring.r3{width:min(175px,50vw);height:min(175px,50vw)}
+  .qbtn{width:40px;height:40px}
+  /* stack event cards */
+  .event-card{min-width:100%}
+  .sep-svg{height:60px}
+  /* tighter ornament */
+  .orn::before,.orn::after{max-width:50px}
+}
+/* iPhone SE / tiny screens */
+@media(max-width:360px){
+  .cover-names{font-size:2.4rem}
+  .cover-bismillah{font-size:1.6rem}
+  .bismillah{font-size:1.6rem}
+}
+/* Tablet */
+@media(min-width:601px) and (max-width:900px){
+  .couple-grid{gap:28px}
+  .event-card{min-width:280px}
+}
+/* Touch: remove hover tricks that cause sticky states */
+@media(hover:none){
+  .event-card:hover{transform:none;background:rgba(255,255,255,.05)}
+  .btn-wa:hover{transform:none;box-shadow:none}
+}
+/* High-DPI: slightly reduce box-shadow complexity */
+@media(min-resolution:2dppx){
+  .ayat-card{box-shadow:0 16px 40px rgba(45,74,54,.07)}
+  .gift-card{box-shadow:0 12px 30px rgba(45,74,54,.06)}
+}
+</style>
 </head>
 <body>
 
-    <audio id="bg-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+<div id="prog" role="progressbar" aria-hidden="true"></div>
 
-    <div id="audio-control" onclick="toggleAudio()">
-        <i class="fas fa-music"></i>
+<audio id="bgm" loop preload="none">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+<button id="audio-btn" aria-label="Putar/Jeda musik latar" onclick="toggleAudio()">
+  <i class="fas fa-music" aria-hidden="true"></i>
+</button>
+
+<!-- ═══════════════════════════════════════
+     COVER
+════════════════════════════════════════ -->
+<section id="cover" aria-label="Sampul undangan">
+  <div class="cover-bg" aria-hidden="true"></div>
+  <div class="cover-grid" aria-hidden="true"></div>
+
+  <!-- Animated side strips -->
+  <div class="cover-strip l" aria-hidden="true"><div class="cover-strip-inner"></div></div>
+  <div class="cover-strip r" aria-hidden="true"><div class="cover-strip-inner"></div></div>
+
+  <!-- Top/bottom kawung stripe SVG -->
+  <div class="cover-stripe top" aria-hidden="true">
+    <svg viewBox="0 0 400 70" preserveAspectRatio="xMidYMid slice" width="100%" height="70" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="kp" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="20" r="9" fill="none" stroke="rgba(184,145,58,.3)" stroke-width=".8"/>
+          <circle cx="30" cy="20" r="9" fill="none" stroke="rgba(184,145,58,.3)" stroke-width=".8"/>
+          <circle cx="20" cy="10" r="9" fill="none" stroke="rgba(184,145,58,.3)" stroke-width=".8"/>
+          <circle cx="20" cy="30" r="9" fill="none" stroke="rgba(184,145,58,.3)" stroke-width=".8"/>
+          <circle cx="20" cy="20" r="2.5" fill="rgba(184,145,58,.25)"/>
+        </pattern>
+      </defs>
+      <rect width="400" height="70" fill="url(#kp)"/>
+    </svg>
+  </div>
+  <div class="cover-stripe bot" aria-hidden="true">
+    <svg viewBox="0 0 400 70" preserveAspectRatio="xMidYMid slice" width="100%" height="70" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="kp2" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="20" r="9" fill="none" stroke="rgba(184,145,58,.3)" stroke-width=".8"/>
+          <circle cx="30" cy="20" r="9" fill="none" stroke="rgba(184,145,58,.3)" stroke-width=".8"/>
+          <circle cx="20" cy="10" r="9" fill="none" stroke="rgba(184,145,58,.3)" stroke-width=".8"/>
+          <circle cx="20" cy="30" r="9" fill="none" stroke="rgba(184,145,58,.3)" stroke-width=".8"/>
+          <circle cx="20" cy="20" r="2.5" fill="rgba(184,145,58,.25)"/>
+        </pattern>
+      </defs>
+      <rect width="400" height="70" fill="url(#kp2)"/>
+    </svg>
+  </div>
+
+  <!-- Ambient blobs -->
+  <div class="blob" style="width:70px;height:70px;top:15%;left:8%;--d:9s;animation-delay:-2s" aria-hidden="true"></div>
+  <div class="blob" style="width:44px;height:44px;top:72%;left:86%;--d:7s;animation-delay:-4s" aria-hidden="true"></div>
+  <div class="blob" style="width:28px;height:28px;top:42%;left:4%;--d:11s;animation-delay:-1s" aria-hidden="true"></div>
+
+  <!-- Rings -->
+  <div class="cover-ring r1" aria-hidden="true"></div>
+  <div class="cover-ring r2" aria-hidden="true"></div>
+  <div class="cover-ring r3" aria-hidden="true"></div>
+
+  <div class="cover-inner">
+    <div class="bismillah reveal fd">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
+    <div class="reveal zi d1">
+      <span class="cover-badge">Undangan Pernikahan</span>
+    </div>
+    <div class="reveal zi d2">
+      <h1 class="cover-names">
+        <span class="ng">Ahmad</span>
+        <em class="cover-and">&amp;</em>
+        <span class="ng">Siti</span>
+      </h1>
+    </div>
+    <p class="cover-date reveal fu d3">20 – 21 Oktober 2026</p>
+    <a href="#quotes" class="btn-open reveal fu d4"><span>Buka Undangan</span></a>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-mouse"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- Wave divider cover → quotes -->
+<div class="wave-div" aria-hidden="true">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" height="60" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="sp" x="0" y="0" width="30" height="60" patternUnits="userSpaceOnUse">
+        <rect width="30" height="15" fill="#8B2020"/>
+        <rect y="15" width="30" height="15" fill="#D4A017"/>
+        <rect y="30" width="30" height="15" fill="#5C1A1A"/>
+        <rect y="45" width="30" height="15" fill="#B8913A"/>
+      </pattern>
+    </defs>
+    <path d="M0,28 Q180,0 360,28 Q540,56 720,28 Q900,0 1080,28 Q1260,56 1440,28 L1440,60 L0,60 Z" fill="url(#sp)" opacity=".8"/>
+    <path d="M0,36 Q180,10 360,36 Q540,62 720,36 Q900,10 1080,36 Q1260,62 1440,36 L1440,60 L0,60 Z" fill="#F9F6ED"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MUKADIMAH
+════════════════════════════════════════ -->
+<section id="quotes">
+  <!-- Scattered flower bg (inline SVG, no extra request) -->
+  <div class="flower-bg" aria-hidden="true">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="fl">
+          <ellipse rx="4" ry="11" fill="#8B2020"/>
+          <ellipse rx="4" ry="11" fill="#8B2020" transform="rotate(45)"/>
+          <ellipse rx="4" ry="11" fill="#D4A017" transform="rotate(90)"/>
+          <ellipse rx="4" ry="11" fill="#D4A017" transform="rotate(135)"/>
+          <ellipse rx="4" ry="11" fill="#8B2020" transform="rotate(180)"/>
+          <ellipse rx="4" ry="11" fill="#8B2020" transform="rotate(225)"/>
+          <ellipse rx="4" ry="11" fill="#D4A017" transform="rotate(270)"/>
+          <ellipse rx="4" ry="11" fill="#D4A017" transform="rotate(315)"/>
+          <circle r="5" fill="#B8913A"/>
+        </g>
+      </defs>
+      <use href="#fl" xlink:href="#fl" transform="translate(80,90) scale(.6)"/>
+      <use href="#fl" xlink:href="#fl" transform="translate(340,170) scale(.45)"/>
+      <use href="#fl" xlink:href="#fl" transform="translate(620,55) scale(.55)"/>
+      <use href="#fl" xlink:href="#fl" transform="translate(1020,160) scale(.5)"/>
+      <use href="#fl" xlink:href="#fl" transform="translate(1320,85) scale(.55)"/>
+      <use href="#fl" xlink:href="#fl" transform="translate(170,360) scale(.42)"/>
+      <use href="#fl" xlink:href="#fl" transform="translate(820,390) scale(.6)"/>
+    </svg>
+  </div>
+
+  <div class="ayat-card reveal fu" style="position:relative;z-index:2">
+    <!-- Corner ornaments -->
+    <svg class="co tl" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M2 2L2 17M2 2L17 2" stroke="#B8913A" stroke-width="1.2" opacity=".7"/>
+      <path d="M2 2L9 9" stroke="#8B2020" stroke-width=".9" opacity=".45"/>
+      <circle cx="2" cy="2" r="2.5" fill="#B8913A" opacity=".6"/>
+      <circle cx="17" cy="2" r="1.5" fill="#D4A017" opacity=".38"/>
+      <circle cx="2" cy="17" r="1.5" fill="#D4A017" opacity=".38"/>
+    </svg>
+    <svg class="co tr" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 2L2 17M2 2L17 2" stroke="#B8913A" stroke-width="1.2" opacity=".7"/><circle cx="2" cy="2" r="2.5" fill="#B8913A" opacity=".6"/></svg>
+    <svg class="co bl" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 2L2 17M2 2L17 2" stroke="#B8913A" stroke-width="1.2" opacity=".7"/><circle cx="2" cy="2" r="2.5" fill="#B8913A" opacity=".6"/></svg>
+    <svg class="co br" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 2L2 17M2 2L17 2" stroke="#B8913A" stroke-width="1.2" opacity=".7"/><circle cx="2" cy="2" r="2.5" fill="#B8913A" opacity=".6"/></svg>
+
+    <p class="lbl reveal fd">Mukadimah</p>
+    <div class="orn reveal zi d1"><div class="orn-dot"></div></div>
+    <p class="ayat-ar reveal fu d2">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً</p>
+    <p class="ayat-tr reveal fu d3">"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antara kamu rasa kasih dan sayang."</p>
+    <span class="ayat-ref reveal fu d4">QS. Ar-Rum: 21</span>
+  </div>
+</section>
+
+<!-- Motif Banner A -->
+<div id="banner-a" aria-hidden="true">
+  <div class="banner-motif-svg">
+    <svg width="100%" height="100%" viewBox="0 0 800 140" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="bap" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <polygon points="20,2 38,15 20,28 2,15" fill="none" stroke="#D4A017" stroke-width=".7"/>
+          <polygon points="20,7 33,15 20,23 7,15" fill="#8B2020" opacity=".3"/>
+          <circle cx="20" cy="15" r="2" fill="#D4A017" opacity=".6"/>
+        </pattern>
+      </defs>
+      <rect width="800" height="140" fill="url(#bap)"/>
+    </svg>
+  </div>
+  <!-- Animated wave motif line -->
+  <svg width="100%" viewBox="0 0 800 40" style="max-width:600px;display:block;margin:0 auto 14px;position:relative;z-index:2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,20 C25,5 35,35 60,20 C85,5 95,35 120,20 C145,5 155,35 180,20 C205,5 215,35 240,20 C265,5 275,35 300,20 C325,5 335,35 360,20 C385,5 395,35 420,20 C445,5 455,35 480,20 C505,5 515,35 540,20 C565,5 575,35 600,20 C625,5 635,35 660,20 C685,5 695,35 720,20 C745,5 755,35 780,20 C795,12 798,16 800,20"
+          stroke="#D4A017" stroke-width="1.8" fill="none" opacity=".7">
+      <animate attributeName="stroke-dasharray" from="0,2400" to="2400,0" dur="3s" fill="freeze"/>
+    </path>
+    <g transform="translate(100,20)"><circle r="4" fill="#D4A017" opacity=".7"/><line x1="0" y1="-7" x2="0" y2="7" stroke="#8B2020" stroke-width="1.5"/><line x1="-7" y1="0" x2="7" y2="0" stroke="#8B2020" stroke-width="1.5"/><line x1="-5" y1="-5" x2="5" y2="5" stroke="#D4A017" stroke-width="1"/><line x1="5" y1="-5" x2="-5" y2="5" stroke="#D4A017" stroke-width="1"/></g>
+    <g transform="translate(400,20)"><circle r="4" fill="#D4A017" opacity=".7"/><line x1="0" y1="-7" x2="0" y2="7" stroke="#8B2020" stroke-width="1.5"/><line x1="-7" y1="0" x2="7" y2="0" stroke="#8B2020" stroke-width="1.5"/></g>
+    <g transform="translate(700,20)"><circle r="4" fill="#D4A017" opacity=".7"/><line x1="0" y1="-7" x2="0" y2="7" stroke="#8B2020" stroke-width="1.5"/><line x1="-7" y1="0" x2="7" y2="0" stroke="#8B2020" stroke-width="1.5"/><line x1="-5" y1="-5" x2="5" y2="5" stroke="#D4A017" stroke-width="1"/><line x1="5" y1="-5" x2="-5" y2="5" stroke="#D4A017" stroke-width="1"/></g>
+  </svg>
+  <!-- Islamic geometric star row -->
+  <svg width="180" height="36" viewBox="0 0 180 36" style="display:block;margin:0 auto;position:relative;z-index:2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <g opacity=".65">
+      <g transform="translate(18,18)"><polygon points="0,-14 3.3,-5.5 12,-10 5.5,0 12,10 3.3,5.5 0,14 -3.3,5.5 -12,10 -5.5,0 -12,-10 -3.3,-5.5" fill="#B8913A"/><circle r="4" fill="#EDD99A"/></g>
+      <line x1="36" y1="18" x2="72" y2="18" stroke="rgba(184,145,58,.35)" stroke-width="1"/>
+      <g transform="translate(90,18)"><polygon points="0,-14 3.3,-5.5 12,-10 5.5,0 12,10 3.3,5.5 0,14 -3.3,5.5 -12,10 -5.5,0 -12,-10 -3.3,-5.5" fill="#B8913A"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/></polygon><circle r="4" fill="#EDD99A"/></g>
+      <line x1="108" y1="18" x2="144" y2="18" stroke="rgba(184,145,58,.35)" stroke-width="1"/>
+      <g transform="translate(162,18)"><polygon points="0,-14 3.3,-5.5 12,-10 5.5,0 12,10 3.3,5.5 0,14 -3.3,5.5 -12,10 -5.5,0 -12,-10 -3.3,-5.5" fill="#B8913A"/><circle r="4" fill="#EDD99A"/></g>
+    </g>
+  </svg>
+</div>
+
+<!-- Wave divider -->
+<div class="wave-div" aria-hidden="true">
+  <svg viewBox="0 0 1440 50" preserveAspectRatio="none" height="50" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 Q360,50 720,0 Q1080,50 1440,0 L1440,50 L0,50 Z" fill="#5C3D1A"/>
+    <path d="M0,0 Q360,50 720,0 Q1080,50 1440,0 L1440,0 L0,0 Z" fill="#EEE9D8"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MEMPELAI
+════════════════════════════════════════ -->
+<section id="couple">
+  <!-- Kawung tile bg -->
+  <div class="tile-bg" aria-hidden="true">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="kwg" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+          <circle cx="15" cy="30" r="13" fill="none" stroke="#2D4A36" stroke-width=".7"/>
+          <circle cx="45" cy="30" r="13" fill="none" stroke="#2D4A36" stroke-width=".7"/>
+          <circle cx="30" cy="15" r="13" fill="none" stroke="#2D4A36" stroke-width=".7"/>
+          <circle cx="30" cy="45" r="13" fill="none" stroke="#2D4A36" stroke-width=".7"/>
+          <circle cx="30" cy="30" r="4" fill="#B8913A" opacity=".25"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#kwg)"/>
+    </svg>
+  </div>
+
+  <div style="position:relative;z-index:1;width:100%">
+    <p class="lbl reveal fd">Mempelai</p>
+    <h2 class="ttl reveal fu d1">Dengan Ridha Allah SWT</h2>
+    <div class="orn reveal zi d2"><div class="orn-dot"></div></div>
+    <p style="font-size:.84rem;color:var(--muted);max-width:500px;margin:0 auto" class="reveal fu d2">
+      Kami bermaksud menyelenggarakan pernikahan putra-putri kami yang tercinta.
+    </p>
+
+    <div class="couple-grid">
+      <!-- Ahmad -->
+      <div class="person-card reveal fr d2">
+        <div class="photo-wrap">
+          <div class="photo-ring"></div>
+          <div class="photo-bg pa">
+            <svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <g transform="translate(27,27)">
+                <ellipse rx="4.5" ry="11" fill="#D4A017" opacity=".85"/>
+                <ellipse rx="4.5" ry="11" fill="#8B2020" opacity=".85" transform="rotate(45)"/>
+                <ellipse rx="4.5" ry="11" fill="#D4A017" opacity=".85" transform="rotate(90)"/>
+                <ellipse rx="4.5" ry="11" fill="#8B2020" opacity=".85" transform="rotate(135)"/>
+                <circle r="5.5" fill="#EDD99A"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <h3 class="pname">Ahmad Rizky, S.T.</h3>
+        <p class="ppar">Putra dari<br>Bapak Fulan &amp; Ibu Fulanah</p>
+      </div>
+
+      <!-- Heart + rings -->
+      <div class="reveal zi d3" style="padding:16px 0;flex-shrink:0">
+        <div class="heart-wrap"><i class="fas fa-heart" aria-hidden="true"></i></div>
+        <svg class="ring-svg" width="66" height="28" viewBox="0 0 66 28" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="14" r="10" fill="none" stroke="#B8913A" stroke-width="2.4"/>
+          <circle cx="46" cy="14" r="10" fill="none" stroke="#B8913A" stroke-width="2.4"/>
+          <circle cx="46" cy="14" r="10" fill="none" stroke="#D4A017" stroke-width=".9" stroke-dasharray="3.5,3">
+            <animateTransform attributeName="transform" type="rotate" from="0 46 14" to="360 46 14" dur="7s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+
+      <!-- Siti -->
+      <div class="person-card reveal fl d2">
+        <div class="photo-wrap">
+          <div class="photo-ring"></div>
+          <div class="photo-bg pb">
+            <svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <g transform="translate(27,27)" opacity=".9">
+                <circle cx="-11" cy="0" r="10" fill="none" stroke="#D4B06A" stroke-width="1.5"/>
+                <circle cx="11" cy="0" r="10" fill="none" stroke="#D4B06A" stroke-width="1.5"/>
+                <circle cx="0" cy="-11" r="10" fill="none" stroke="#EDD99A" stroke-width="1.5"/>
+                <circle cx="0" cy="11" r="10" fill="none" stroke="#EDD99A" stroke-width="1.5"/>
+                <circle r="4" fill="#EDD99A"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <h3 class="pname">Siti Aminah, S.E.</h3>
+        <p class="ppar">Putri dari<br>Bapak Fulan &amp; Ibu Fulanah</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Parang wave divider -->
+<svg viewBox="0 0 1440 50" preserveAspectRatio="none" style="width:100%;height:50px;display:block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,25 Q360,-5 720,25 Q1080,55 1440,25 L1440,50 L0,50 Z" fill="#5C3D1A"/>
+</svg>
+
+<!-- Motif Banner B -->
+<div id="banner-b" aria-hidden="true">
+  <div class="motif-b-diagonal">
+    <svg width="100%" height="100%" viewBox="0 0 400 140" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="bbp" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
+          <path d="M0,25 C10,5 30,5 25,25 C20,45 40,45 50,25" fill="none" stroke="rgba(212,176,106,.18)" stroke-width="2"/>
+        </pattern>
+      </defs>
+      <rect width="400" height="140" fill="url(#bbp)"/>
+    </svg>
+  </div>
+  <!-- Kawung row -->
+  <svg width="220" height="56" viewBox="0 0 220 56" style="display:block;margin:0 auto 14px;position:relative;z-index:2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <g opacity=".7">
+      <g transform="translate(28,28)"><circle cx="-12" cy="0" r="11" fill="none" stroke="#D4B06A" stroke-width="1.2"/><circle cx="12" cy="0" r="11" fill="none" stroke="#D4B06A" stroke-width="1.2"/><circle cx="0" cy="-12" r="11" fill="none" stroke="#EDD99A" stroke-width="1.2"/><circle cx="0" cy="12" r="11" fill="none" stroke="#EDD99A" stroke-width="1.2"/><circle r="3.5" fill="#EDD99A" opacity=".7"/></g>
+      <g transform="translate(110,28)"><circle cx="-12" cy="0" r="11" fill="none" stroke="#D4B06A" stroke-width="1.2"/><circle cx="12" cy="0" r="11" fill="none" stroke="#D4B06A" stroke-width="1.2"/><circle cx="0" cy="-12" r="11" fill="none" stroke="#EDD99A" stroke-width="1.2"/><circle cx="0" cy="12" r="11" fill="none" stroke="#EDD99A" stroke-width="1.2"/><circle r="3.5" fill="#EDD99A" opacity=".7"><animate attributeName="r" values="3.5;5.5;3.5" dur="3s" repeatCount="indefinite"/></circle></g>
+      <g transform="translate(192,28)"><circle cx="-12" cy="0" r="11" fill="none" stroke="#D4B06A" stroke-width="1.2"/><circle cx="12" cy="0" r="11" fill="none" stroke="#D4B06A" stroke-width="1.2"/><circle cx="0" cy="-12" r="11" fill="none" stroke="#EDD99A" stroke-width="1.2"/><circle cx="0" cy="12" r="11" fill="none" stroke="#EDD99A" stroke-width="1.2"/><circle r="3.5" fill="#EDD99A" opacity=".7"/></g>
+    </g>
+  </svg>
+  <!-- Parang S-curve line -->
+  <svg viewBox="0 0 800 28" style="width:100%;max-width:560px;height:28px;display:block;margin:0 auto;position:relative;z-index:2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs><pattern id="psl" x="0" y="0" width="40" height="28" patternUnits="userSpaceOnUse"><path d="M0,22 C8,4 18,4 20,14 C22,24 32,24 40,6" fill="none" stroke="#D4B06A" stroke-width="1.4" opacity=".55"/><circle cx="20" cy="14" r="1.8" fill="#1A3A5C" opacity=".45"/></pattern></defs>
+    <rect width="800" height="28" fill="url(#psl)"/>
+  </svg>
+</div>
+
+<!-- Wave into event -->
+<svg viewBox="0 0 1440 50" preserveAspectRatio="none" style="width:100%;height:50px;display:block;background:#5C3D1A" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,0 Q360,50 720,0 Q1080,50 1440,0 L1440,50 L0,50 Z" fill="#2D4A36"/>
+</svg>
+
+<!-- ═══════════════════════════════════════
+     ACARA
+════════════════════════════════════════ -->
+<section id="event">
+  <!-- Rotating Islamic star -->
+  <svg width="52" height="52" viewBox="0 0 52 52" style="display:block;margin:0 auto 8px;opacity:.35;position:relative;z-index:1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(26,26)">
+      <polygon points="0,-18 4.2,-7 15,-13 7,0 15,13 4.2,7 0,18 -4.2,7 -15,13 -7,0 -15,-13 -4.2,-7" fill="#B8913A">
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="22s" repeatCount="indefinite"/>
+      </polygon>
+      <circle r="5" fill="#D4A017" opacity=".7"/>
+    </g>
+  </svg>
+
+  <div style="position:relative;z-index:1;width:100%">
+    <p class="lbl reveal fd">Waktu &amp; Tempat</p>
+    <h2 class="ttl reveal fu d1">Rangkaian Acara</h2>
+    <div class="orn reveal zi d2" style="opacity:.5"><div class="orn-dot" style="background:var(--gold-l)"></div></div>
+
+    <div class="event-grid">
+      <!-- Akad Nikah -->
+      <article class="event-card ca reveal fr d2">
+        <div class="event-icon"><i class="fas fa-mosque" aria-hidden="true"></i></div>
+        <h3 class="event-type">Akad Nikah</h3>
+        <span class="event-tag ta">Akad</span>
+        <div class="ev-div"></div>
+        <!-- Mini color bar motif -->
+        <svg class="mini-bar" viewBox="0 0 80 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="20" height="14" fill="#8B2020" opacity=".8"/>
+          <rect x="20" width="20" height="14" fill="#D4A017" opacity=".8"/>
+          <rect x="40" width="20" height="14" fill="#5C1A1A" opacity=".8"/>
+          <rect x="60" width="20" height="14" fill="#B8913A" opacity=".8"/>
+        </svg>
+        <p class="event-date">Jumat, 20 Oktober 2026</p>
+        <p class="event-time">08.00 WITA — Selesai</p>
+        <div class="event-venue">
+          <p class="event-vname">Masjid Raya Sabilal Muhtadin</p>
+          <p class="event-vaddr">Jl. Jend Sudirman No.1<br>Kec. Banjarmasin Tengah</p>
+        </div>
+        <div class="event-qr">
+          <p>Scan QR Lokasi</p>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://maps.google.com&color=2D4A36&bgcolor=1e3528" alt="QR Code Lokasi Akad Nikah" loading="lazy" width="84" height="84">
+        </div>
+        <a href="https://maps.app.goo.gl/akadDummy" target="_blank" rel="noopener noreferrer" class="btn-map">
+          <i class="fas fa-map-marker-alt" aria-hidden="true"></i><span>Lihat di Peta</span>
+        </a>
+      </article>
+
+      <!-- Walimah -->
+      <article class="event-card cb reveal fl d3">
+        <div class="event-icon"><i class="fas fa-star-and-crescent" aria-hidden="true"></i></div>
+        <h3 class="event-type">Walimatul 'Ursy</h3>
+        <span class="event-tag tb">Resepsi</span>
+        <div class="ev-div"></div>
+        <!-- Mini kawung motif -->
+        <svg class="mini-bar" viewBox="0 0 80 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g opacity=".7">
+            <circle cx="7" cy="7" r="6" fill="none" stroke="#D4B06A" stroke-width="1"/>
+            <circle cx="20" cy="7" r="6" fill="none" stroke="#D4B06A" stroke-width="1"/>
+            <circle cx="33" cy="7" r="6" fill="none" stroke="#EDD99A" stroke-width="1"/>
+            <circle cx="46" cy="7" r="6" fill="none" stroke="#EDD99A" stroke-width="1"/>
+            <circle cx="59" cy="7" r="6" fill="none" stroke="#D4B06A" stroke-width="1"/>
+            <circle cx="72" cy="7" r="6" fill="none" stroke="#D4B06A" stroke-width="1"/>
+          </g>
+        </svg>
+        <p class="event-date">Sabtu, 21 Oktober 2026</p>
+        <p class="event-time">10.00 WITA — Selesai</p>
+        <div class="event-venue">
+          <p class="event-vname">Gedung Serbaguna Banjarbaru</p>
+          <p class="event-vaddr">Jl. Panglima Batur<br>Kec. Banjarbaru Utara</p>
+        </div>
+        <div class="event-qr">
+          <p>Scan QR Lokasi</p>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://maps.google.com&color=2D4A36&bgcolor=1e3528" alt="QR Code Lokasi Resepsi" loading="lazy" width="84" height="84">
+        </div>
+        <a href="https://maps.app.goo.gl/resepsiDummy" target="_blank" rel="noopener noreferrer" class="btn-map">
+          <i class="fas fa-map-marker-alt" aria-hidden="true"></i><span>Lihat di Peta</span>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Wave out of event -->
+<svg viewBox="0 0 1440 50" preserveAspectRatio="none" style="width:100%;height:50px;display:block;background:#2D4A36" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,50 Q360,0 720,50 Q1080,0 1440,50 L1440,0 L0,0 Z" fill="#F9F6ED"/>
+</svg>
+
+<!-- ═══════════════════════════════════════
+     NASIHAT
+════════════════════════════════════════ -->
+<section id="nasihat">
+  <!-- 8-pointed star tile bg -->
+  <div class="star-bg" aria-hidden="true">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="stp" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+          <g transform="translate(40,40)">
+            <polygon points="0,-20 4.7,-7.7 18,-14 7.7,0 18,14 4.7,7.7 0,20 -4.7,7.7 -18,14 -7.7,0 -18,-14 -4.7,-7.7" fill="none" stroke="#2D4A36" stroke-width=".7"/>
+            <circle r="5" fill="none" stroke="#B8913A" stroke-width=".5"/>
+          </g>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#stp)"/>
+    </svg>
+  </div>
+
+  <p class="lbl reveal fd" style="position:relative;z-index:1">Mutiara Hikmah</p>
+  <h2 class="ttl reveal fu d1" style="position:relative;z-index:1">Nasihat Pernikahan</h2>
+  <div class="orn reveal zi d2" style="position:relative;z-index:1"><div class="orn-dot"></div></div>
+
+  <div class="qslider reveal zi d4">
+
+    <div class="qcard on">
+      <span class="qmark" aria-hidden="true">"</span>
+      <p class="qtext">Pernikahan adalah separuh dari agama. Maka bertakwalah kepada Allah dalam separuh yang tersisa.</p>
+      <p class="qsrc">— Imam Al-Ghazali<small>Ihya' 'Ulumiddin · w. 505 H</small></p>
     </div>
 
-    <div class="bg-pattern"></div>
+    <div class="qcard">
+      <span class="qmark" aria-hidden="true">"</span>
+      <p class="qtext">Jika seorang suami memandang istrinya dengan penuh kasih sayang, dan sang istri memandang suaminya dengan penuh kasih sayang, maka Allah memandang keduanya dengan penuh rahmat.</p>
+      <p class="qsrc">— Ibnu Qayyim Al-Jauziyyah<small>Raudhah Al-Muhibbin · w. 751 H</small></p>
+    </div>
 
-    <section id="cover">
-        <div style="z-index: 1;">
-            <div class="arabic bismillah reveal fade-down">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
-            <h1 class="names reveal zoom-in delay-100">Ahmad & Siti</h1>
-            <p class="mt-4 reveal fade-up delay-200">Kami mengundang Anda untuk hadir di hari bahagia kami.</p>
-            <a href="#quotes" class="btn reveal fade-up delay-300">Buka Undangan</a>
-        </div>
-    </section>
+    <div class="qcard">
+      <span class="qmark" aria-hidden="true">"</span>
+      <p class="qtext">Dunia adalah perhiasan, dan sebaik-baik perhiasan dunia adalah wanita shalihah — apabila engkau memandangnya ia menyenangkanmu, apabila engkau memerintahnya ia mentaatimu, dan apabila engkau meninggalkannya ia menjagamu.</p>
+      <p class="qsrc">— Imam An-Nawawi<small>Syarh Shahih Muslim · w. 676 H</small></p>
+    </div>
 
-    <section id="quotes">
-        <div class="decor-box reveal fade-up aksen-jawa">
-            <i class="fas fa-moon icon-float"></i>
-            <h2 class="serif">Mukadimah</h2>
-            <div class="divider"></div>
-            <p class="arabic mb-2 reveal fade-in delay-100">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً</p>
-            <p style="font-style: italic; font-size: 0.9rem;" class="reveal fade-in delay-200">"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan sayang." <br> <strong>(QS. Ar-Rum: 21)</strong></p>
-        </div>
-    </section>
+    <div class="qcard">
+      <span class="qmark" aria-hidden="true">"</span>
+      <p class="qtext">Cinta yang hakiki bukan sekadar perasaan, melainkan keputusan; bukan sekadar emosi, melainkan komitmen untuk terus memilih satu sama lain setiap harinya karena Allah.</p>
+      <p class="qsrc">— Ibnu Hazm Al-Andalusi<small>Thawq Al-Hamamah · w. 456 H</small></p>
+    </div>
 
-    <section id="couple">
-        <div>
-            <h2 class="serif reveal fade-down" style="color: var(--primary-green); font-size: 2.5rem;">Mempelai</h2>
-            <div class="divider reveal fade-in"></div>
-            <p class="mb-2 reveal fade-in delay-100">Dengan memohon ridha Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
-            
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 50px; align-items: center;">
-                <div class="reveal fade-right delay-200" style="flex: 1; min-width: 250px;">
-                    <h3 class="serif" style="color: var(--gold); font-size: 1.8rem;">Ahmad Rizky, S.T.</h3>
-                    <p>Putra dari Bapak Fulan<br>& Ibu Fulanah</p>
-                    <p style="font-size: 0.8rem; color: var(--primary-green); font-style: italic; margin-top: 5px;">Keluarga Banjar</p>
-                </div>
-                
-                <div class="reveal zoom-in delay-300" style="font-size: 2.5rem; color: var(--primary-green); padding: 0 20px;">
-                    <i class="fas fa-heart icon-pulse"></i>
-                </div>
-                
-                <div class="reveal fade-left delay-400" style="flex: 1; min-width: 250px;">
-                    <h3 class="serif" style="color: var(--gold); font-size: 1.8rem;">Siti Aminah, S.E.</h3>
-                    <p>Putri dari Bapak Fulan<br>& Ibu Fulanah</p>
-                    <p style="font-size: 0.8rem; color: var(--primary-green); font-style: italic; margin-top: 5px;">Keluarga Jawa</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="qcard">
+      <span class="qmark" aria-hidden="true">"</span>
+      <p class="qtext">Pernikahan yang dibangun di atas pondasi takwa kepada Allah akan kokoh menghadapi badai kehidupan. Jadikanlah Allah sebagai saksi pertama dan utama dalam rumah tangga kalian.</p>
+      <p class="qsrc">— Syaikh Yusuf Al-Qaradhawi<small>Fikih Pernikahan Islam · 1926–2022 M</small></p>
+    </div>
 
-    <section id="event" style="background-color: #EFECE1;">
-        <h2 class="serif reveal fade-up" style="color: var(--primary-green); font-size: 2.5rem;">Waktu & Tempat</h2>
-        <div class="divider reveal fade-up delay-100"></div>
-        
-        <div class="event-container">
-            <div class="event-card reveal fade-right delay-200 aksen-banjar">
-                <i class="fas fa-mosque icon-pulse"></i>
-                <h3 class="serif" style="color: var(--primary-green); font-size: 1.8rem;">Akad Nikah</h3>
-                <div style="width: 30px; height: 2px; background: var(--gold); margin: 10px auto;"></div>
-                
-                <p style="font-weight: 600; font-size: 1.1rem; margin-top: 15px;">Jumat, 20 Oktober 2026</p>
-                <p>Pukul 08:00 WITA - Selesai</p>
-                
-                <p class="mt-4" style="font-weight: 600;">Masjid Raya Sabilal Muhtadin</p>
-                <p style="font-size: 0.9rem;">Jl. Jend Sudirman No.1, Kec. Banjarmasin Tengah</p>
+    <div class="qcard">
+      <span class="qmark" aria-hidden="true">"</span>
+      <p class="qtext">Sakinah bukan berarti tidak ada masalah. Melainkan ketika badai datang, kalian tetap bergandengan tangan menghadapinya bersama. Itulah rahmat yang Allah janjikan.</p>
+      <p class="qsrc">— Buya Hamka<small>Tafsir Al-Azhar · 1908–1981 M</small></p>
+    </div>
 
-                <div class="mt-4">
-                    <p style="font-size: 0.8rem; margin-bottom: 10px;">Scan QR Lokasi Akad</p>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/akadDummy" alt="QR Code Akad" style="border: 3px solid var(--gold); border-radius: 10px; width: 120px; background: white; padding: 5px;">
-                </div>
-                
-                <a href="https://maps.app.goo.gl/akadDummy" target="_blank" class="btn mt-4">
-                    <i class="fas fa-map-marker-alt"></i> Peta Lokasi Akad
-                </a>
-            </div>
+    <div class="qcard">
+      <span class="qmark" aria-hidden="true">"</span>
+      <p class="qtext">Pernikahan adalah ibadah terpanjang dalam hidup seorang Muslim. Perlakukanlah pasanganmu sebagaimana kamu ingin diperlakukan oleh Allah — dengan lemah lembut, penuh maaf, dan tanpa putus asa.</p>
+      <p class="qsrc">— KH. Ahmad Dahlan<small>Muhammdiyah Founding · 1868–1923 M</small></p>
+    </div>
 
-            <div class="event-card reveal fade-left delay-400 aksen-jawa">
-                <i class="fas fa-kaaba icon-pulse"></i>
-                <h3 class="serif" style="color: var(--primary-green); font-size: 1.8rem;">Resepsi</h3>
-                <div style="width: 30px; height: 2px; background: var(--gold); margin: 10px auto;"></div>
-                
-                <p style="font-weight: 600; font-size: 1.1rem; margin-top: 15px;">Sabtu, 21 Oktober 2026</p>
-                <p>Pukul 10:00 WITA - Selesai</p>
-                
-                <p class="mt-4" style="font-weight: 600;">Gedung Serbaguna Banjarbaru</p>
-                <p style="font-size: 0.9rem;">Jl. Panglima Batur, Kec. Banjarbaru Utara</p>
+    <div class="qcard">
+      <span class="qmark" aria-hidden="true">"</span>
+      <p class="qtext">Di era yang serba cepat ini, luangkan waktu untuk duduk berdua, matikan layar, dan hanya berbicara dari hati ke hati. Itulah investasi terbaik dalam pernikahan kalian.</p>
+      <p class="qsrc">— Ustadz Adi Hidayat<small>Mutiara Hati · Kontemporer</small></p>
+    </div>
 
-                <div class="mt-4">
-                    <p style="font-size: 0.8rem; margin-bottom: 10px;">Scan QR Lokasi Resepsi</p>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/resepsiDummy" alt="QR Code Resepsi" style="border: 3px solid var(--gold); border-radius: 10px; width: 120px; background: white; padding: 5px;">
-                </div>
-                
-                <a href="https://maps.app.goo.gl/resepsiDummy" target="_blank" class="btn mt-4">
-                    <i class="fas fa-map-marker-alt"></i> Peta Lokasi Resepsi
-                </a>
-            </div>
-        </div>
-    </section>
+    <div class="qcard">
+      <span class="qmark" aria-hidden="true">"</span>
+      <p class="qtext">Jangan pernah berhenti saling mendoakan. Doa seorang suami untuk istrinya dan doa istri untuk suaminya adalah amalan yang tidak pernah terputus pahalanya, bahkan saat kalian sedang berselisih sekalipun.</p>
+      <p class="qsrc">— Ustadz Felix Siauw<small>Hijab I'm in Love · Kontemporer</small></p>
+    </div>
 
-    <section id="nasihat" style="background-color: var(--primary-green); color: var(--text-light);">
-        <div style="width: 100%;">
-            <i class="fas fa-star-and-crescent icon-float reveal fade-down" style="color: var(--gold);"></i>
-            <h2 class="serif mt-2 reveal fade-up delay-100" style="color: var(--gold);">Nasihat Pernikahan</h2>
-            <div class="divider reveal fade-in delay-200"></div>
-            
-            <div class="slider-wrapper mt-4 reveal zoom-in delay-300">
-                <div class="slide active">
-                    <p style="font-size: 1.1rem; font-style: italic; line-height: 1.8;">"Pernikahan yang sukses bukanlah ketika kamu bisa hidup damai bersamanya, melainkan ketika kamu tidak bisa hidup damai tanpanya. Jadikanlah Allah sebagai tujuan utama kalian berdua."</p>
-                    <h4 class="serif mt-4" style="color: var(--gold);">- Hasan al-Basri -</h4>
-                </div>
-                <div class="slide">
-                    <p style="font-size: 1.1rem; font-style: italic; line-height: 1.8;">"Sebaik-baik kalian adalah yang paling baik terhadap keluarganya (istrinya), dan aku adalah orang yang paling baik di antara kalian terhadap keluargaku."</p>
-                    <h4 class="serif mt-4" style="color: var(--gold);">- HR. Tirmidzi -</h4>
-                </div>
-                <button class="prev" onclick="changeSlide(-1)">❮</button>
-                <button class="next" onclick="changeSlide(1)">❯</button>
-            </div>
-        </div>
-    </section>
+    <div class="qnav" role="group" aria-label="Navigasi kutipan">
+      <button class="qbtn" onclick="qChange(-1)" type="button" aria-label="Kutipan sebelumnya"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+      <div class="qdots" id="qdots" role="list" aria-label="Indikator slide"></div>
+      <button class="qbtn" onclick="qChange(1)" type="button" aria-label="Kutipan berikutnya"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</section>
 
-    <section id="gift">
-        <div class="text-center w-100">
-            <h2 class="serif reveal fade-up" style="color: var(--primary-green);">Tanda Kasih</h2>
-            <div class="divider reveal fade-in delay-100"></div>
-            <p class="reveal fade-up delay-200" style="max-width: 600px; margin: 0 auto;">Doa restu Anda adalah hadiah terbaik bagi kami. Namun jika Anda ingin memberikan tanda kasih secara langsung, Anda dapat menggunakan layanan di bawah ini:</p>
-            
-            <div class="decor-box mt-4 reveal zoom-in delay-300" style="padding: 40px 20px;">
-                <i class="fas fa-gift icon-pulse"></i>
-                <h3 class="serif mb-2">Koordinasi Pengiriman Hadiah</h3>
-                <p style="margin-bottom: 20px; font-size: 0.95rem;">Silakan menghubungi kami melalui WhatsApp untuk berkoordinasi.</p>
-                
-                <a href="https://wa.me/6281234567890?text=Assalamu'alaikum%20Ahmad/Siti,%20saya%20ingin%20berkoordinasi%20mengenai%20pengiriman%20hadiah%20pernikahan." target="_blank" class="btn btn-gold">
-                    <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i> Konfirmasi via WhatsApp
-                </a>
-            </div>
-        </div>
-    </section>
+<!-- ═══════════════════════════════════════
+     SEPARATOR
+════════════════════════════════════════ -->
+<div class="sep" aria-hidden="true">
+  <svg class="sep-svg" viewBox="0 0 820 70" xmlns="http://www.w3.org/2000/svg">
+    <!-- Line left -->
+    <line x1="0" y1="35" x2="355" y2="35" stroke="rgba(184,145,58,.28)" stroke-width="1"/>
+    <!-- Left motif: flower chain -->
+    <g opacity=".65">
+      <g transform="translate(60,35)"><circle r="4" fill="#D4A017" opacity=".7"/><line x1="0" y1="-7" x2="0" y2="7" stroke="#8B2020" stroke-width="1.5"/><line x1="-7" y1="0" x2="7" y2="0" stroke="#8B2020" stroke-width="1.5"/><line x1="-5" y1="-5" x2="5" y2="5" stroke="#D4A017" stroke-width="1"/><line x1="5" y1="-5" x2="-5" y2="5" stroke="#D4A017" stroke-width="1"/></g>
+      <g transform="translate(155,35)"><circle r="4" fill="#D4A017" opacity=".7"/><line x1="0" y1="-7" x2="0" y2="7" stroke="#8B2020" stroke-width="1.5"/><line x1="-7" y1="0" x2="7" y2="0" stroke="#8B2020" stroke-width="1.5"/></g>
+      <g transform="translate(255,35)"><circle r="4" fill="#D4A017" opacity=".7"/><line x1="0" y1="-7" x2="0" y2="7" stroke="#8B2020" stroke-width="1.5"/><line x1="-7" y1="0" x2="7" y2="0" stroke="#8B2020" stroke-width="1.5"/><line x1="-5" y1="-5" x2="5" y2="5" stroke="#D4A017" stroke-width="1"/><line x1="5" y1="-5" x2="-5" y2="5" stroke="#D4A017" stroke-width="1"/></g>
+    </g>
+    <!-- Center: Islamic 8-star -->
+    <g transform="translate(410,35)">
+      <polygon points="0,-20 4.7,-7.7 18,-14 7.7,0 18,14 4.7,7.7 0,20 -4.7,7.7 -18,14 -7.7,0 -18,-14 -4.7,-7.7" fill="#B8913A" opacity=".6">
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="26s" repeatCount="indefinite"/>
+      </polygon>
+      <circle r="7" fill="#EDD99A" opacity=".8"/>
+      <circle r="3.5" fill="#B8913A"/>
+    </g>
+    <!-- Line right -->
+    <line x1="465" y1="35" x2="820" y2="35" stroke="rgba(184,145,58,.28)" stroke-width="1"/>
+    <!-- Right motif: kawung chain -->
+    <g opacity=".65">
+      <g transform="translate(530,35)"><circle cx="-9" cy="0" r="8" fill="none" stroke="#D4B06A" stroke-width="1"/><circle cx="9" cy="0" r="8" fill="none" stroke="#D4B06A" stroke-width="1"/><circle cx="0" cy="-9" r="8" fill="none" stroke="#1A3A5C" stroke-width="1"/><circle cx="0" cy="9" r="8" fill="none" stroke="#1A3A5C" stroke-width="1"/><circle r="2.5" fill="#EDD99A" opacity=".7"/></g>
+      <g transform="translate(635,35)"><circle cx="-9" cy="0" r="8" fill="none" stroke="#D4B06A" stroke-width="1"/><circle cx="9" cy="0" r="8" fill="none" stroke="#D4B06A" stroke-width="1"/><circle cx="0" cy="-9" r="8" fill="none" stroke="#1A3A5C" stroke-width="1"/><circle cx="0" cy="9" r="8" fill="none" stroke="#1A3A5C" stroke-width="1"/><circle r="2.5" fill="#EDD99A" opacity=".7"/></g>
+      <g transform="translate(740,35)"><circle cx="-9" cy="0" r="8" fill="none" stroke="#D4B06A" stroke-width="1"/><circle cx="9" cy="0" r="8" fill="none" stroke="#D4B06A" stroke-width="1"/><circle cx="0" cy="-9" r="8" fill="none" stroke="#1A3A5C" stroke-width="1"/><circle cx="0" cy="9" r="8" fill="none" stroke="#1A3A5C" stroke-width="1"/><circle r="2.5" fill="#EDD99A" opacity=".7"/></g>
+    </g>
+  </svg>
+</div>
 
-    <section id="wishes" style="background-color: #EFECE1;">
-        <div class="decor-box reveal fade-up">
-            <i class="fas fa-hands-praying icon-float"></i>
-            <h2 class="serif" style="color: var(--primary-green);">Buku Tamu</h2>
-            <p>Tinggalkan doa dan ucapan selamat untuk kedua mempelai.</p>
-            
-            <form id="wishForm" onsubmit="submitWish(event)" class="mt-4">
-                <input type="text" id="guestName" placeholder="Nama Anda" required>
-                <textarea id="guestMessage" rows="4" placeholder="Tuliskan doa atau ucapan selamat..." required></textarea>
-                <button type="submit" class="btn" style="width: 100%;">
-                    <i class="fas fa-paper-plane"></i> Kirim Ucapan
-                </button>
-            </form>
+<!-- ═══════════════════════════════════════
+     HADIAH
+════════════════════════════════════════ -->
+<section id="gift">
+  <p class="lbl reveal fd">Tanda Kasih</p>
+  <h2 class="ttl reveal fu d1">Hadiah &amp; Doa</h2>
+  <div class="orn reveal zi d2"><div class="orn-dot"></div></div>
 
-            <div id="wishesContainer" style="margin-top: 20px; text-align: left; max-height: 250px; overflow-y: auto; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 10px;">
-                <div style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">
-                    <strong style="color: var(--primary-green);">Keluarga Besar Budi:</strong><br>
-                    <span style="font-size: 0.9rem;">Barakallahu laka wa baraka 'alaika wa jama'a bainakuma fii khair. Selamat berbahagia!</span>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="gift-card reveal zi d3">
+    <div class="gift-ico"><i class="fas fa-gift" aria-hidden="true"></i></div>
+    <h3 class="gift-title">Koordinasi Pengiriman</h3>
+    <p class="gift-desc">Doa dan kehadiran Anda adalah hadiah terbaik bagi kami. Namun bila ingin memberikan tanda kasih, kami sangat mengapresiasi melalui koordinasi di bawah ini.</p>
+    <a href="https://wa.me/6281234567890?text=Assalamu'alaikum%20Ahmad%2FSiti%2C%20saya%20ingin%20berkoordinasi%20mengenai%20hadiah%20pernikahan." target="_blank" rel="noopener noreferrer" class="btn-wa">
+      <i class="fab fa-whatsapp" aria-hidden="true" style="font-size:1.1rem"></i>
+      <span>Konfirmasi via WhatsApp</span>
+    </a>
+  </div>
+</section>
 
-    <footer style="background-color: var(--text-dark); color: var(--text-light); text-align: center; padding: 25px;">
-        <p>© 2026 Ahmad & Siti. Didesain dengan kasih sayang.</p>
-    </footer>
+<!-- ═══════════════════════════════════════
+     BUKU TAMU
+════════════════════════════════════════ -->
+<section id="wishes">
+  <p class="lbl reveal fd">Buku Tamu</p>
+  <h2 class="ttl reveal fu d1">Sampaikan Doa &amp; Ucapan</h2>
+  <div class="orn reveal zi d2"><div class="orn-dot"></div></div>
 
-    <script>
-        // Intersection Observer untuk Animasi Elegan
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.15 // Animasi mulai saat elemen 15% terlihat di layar
-        };
+  <div class="wishes-wrap reveal fu d3">
+    <div class="wish-form">
+      <form id="wishForm" onsubmit="addWish(event)" novalidate>
+        <input type="text" id="guestName" placeholder="Nama Anda" required autocomplete="name" aria-label="Nama Anda">
+        <textarea id="guestMsg" placeholder="Tuliskan doa atau ucapan selamat..." required aria-label="Pesan ucapan"></textarea>
+        <button type="submit" class="btn-sub">
+          <i class="fas fa-paper-plane" aria-hidden="true"></i><span>Kirim Ucapan</span>
+        </button>
+      </form>
+    </div>
+    <div id="wishes-list" role="log" aria-live="polite" aria-label="Daftar ucapan">
+      <div class="wi">
+        <p class="wi-name">Keluarga Besar Budi</p>
+        <p class="wi-msg">Barakallahu laka wa baraka 'alaika wa jama'a bainakuma fii khair. Selamat berbahagia untuk kedua mempelai!</p>
+      </div>
+      <div class="wi">
+        <p class="wi-name">Ustadz Abdullah</p>
+        <p class="wi-msg">Semoga pernikahan ini menjadi ikatan yang sakinah, mawaddah, warahmah. Aamiin ya Rabbal 'Alamin.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    // Opsional: unobserve jika ingin animasi hanya jalan 1x saat pertama kali scroll
-                    // observer.unobserve(entry.target); 
-                }
-            });
-        }, observerOptions);
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <svg width="300" height="36" viewBox="0 0 300 36" style="display:block;margin:0 auto 18px;opacity:.55" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(36,18)"><circle r="4" fill="#D4A017"/><line x1="0" y1="-8" x2="0" y2="8" stroke="#8B2020" stroke-width="1.5"/><line x1="-8" y1="0" x2="8" y2="0" stroke="#8B2020" stroke-width="1.5"/><line x1="-5.6" y1="-5.6" x2="5.6" y2="5.6" stroke="#D4A017" stroke-width="1"/><line x1="5.6" y1="-5.6" x2="-5.6" y2="5.6" stroke="#D4A017" stroke-width="1"/></g>
+    <line x1="52" y1="18" x2="120" y2="18" stroke="rgba(184,145,58,.3)" stroke-width="1"/>
+    <g transform="translate(150,18)"><polygon points="0,-13 3,-5 11,-9 5,0 11,9 3,5 0,13 -3,5 -11,9 -5,0 -11,-9 -3,-5" fill="#B8913A" opacity=".65"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="18s" repeatCount="indefinite"/></polygon><circle r="4" fill="#EDD99A"/></g>
+    <line x1="180" y1="18" x2="248" y2="18" stroke="rgba(184,145,58,.3)" stroke-width="1"/>
+    <g transform="translate(264,18)"><circle cx="-7" cy="0" r="6" fill="none" stroke="#D4B06A" stroke-width="1"/><circle cx="7" cy="0" r="6" fill="none" stroke="#D4B06A" stroke-width="1"/><circle cx="0" cy="-7" r="6" fill="none" stroke="#1A3A5C" stroke-width="1"/><circle cx="0" cy="7" r="6" fill="none" stroke="#1A3A5C" stroke-width="1"/><circle r="2.5" fill="#EDD99A" opacity=".6"/></g>
+  </svg>
+  <p class="footer-names">Ahmad &amp; Siti</p>
+  <p>20 – 21 Oktober 2026</p>
+  <p class="footer-tagline">Sakinah · Mawaddah · Warahmah</p>
+  <p class="footer-copy">© 2026 · Didesain dengan cinta &amp; doa.</p>
+</footer>
 
-        document.querySelectorAll('.reveal').forEach((el) => {
-            observer.observe(el);
-        });
+<script>
+'use strict';
 
-        // Audio Player
-        let isPlaying = false;
-        const audio = document.getElementById("bg-music");
-        const audioIcon = document.querySelector("#audio-control i");
-        const audioControl = document.getElementById("audio-control");
+/* SCROLL PROGRESS */
+const prog = document.getElementById('prog');
+window.addEventListener('scroll', () => {
+  const dh = document.documentElement.scrollHeight - window.innerHeight;
+  prog.style.width = dh > 0 ? (window.scrollY / dh * 100) + '%' : '0';
+}, { passive: true });
 
-        function toggleAudio() {
-            if (isPlaying) {
-                audio.pause();
-                audioIcon.classList.replace('fa-pause', 'fa-music');
-                audioControl.style.animationPlayState = 'paused';
-            } else {
-                audio.play();
-                audioIcon.classList.replace('fa-music', 'fa-pause');
-                audioControl.style.animationPlayState = 'running';
-            }
-            isPlaying = !isPlaying;
-        }
+/* REVEAL */
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+} else {
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('on'));
+}
 
-        // Slider Nasihat
-        let slideIndex = 0;
-        const slides = document.querySelectorAll(".slide");
+/* AUDIO */
+let playing = false;
+const bgm = document.getElementById('bgm');
+const audioBtn = document.getElementById('audio-btn');
+const audioIco = audioBtn.querySelector('i');
+function toggleAudio() {
+  if (playing) {
+    bgm.pause();
+    audioIco.className = 'fas fa-music';
+    audioBtn.classList.remove('playing');
+    audioBtn.setAttribute('aria-label', 'Putar musik latar');
+  } else {
+    bgm.play().catch(() => {});
+    audioIco.className = 'fas fa-pause';
+    audioBtn.classList.add('playing');
+    audioBtn.setAttribute('aria-label', 'Jeda musik latar');
+  }
+  playing = !playing;
+}
 
-        function showSlide(index) {
-            slides.forEach(slide => slide.classList.remove("active"));
-            if (index >= slides.length) slideIndex = 0;
-            if (index < 0) slideIndex = slides.length - 1;
-            slides[slideIndex].classList.add("active");
-        }
+/* QUOTE SLIDER */
+let qi = 0;
+const allCards = Array.from(document.querySelectorAll('.qcard'));
+const qdotsEl  = document.getElementById('qdots');
+let qTimer;
 
-        function changeSlide(n) {
-            slideIndex += n;
-            showSlide(slideIndex);
-        }
-        setInterval(() => changeSlide(1), 6000);
+function buildDots() {
+  qdotsEl.innerHTML = '';
+  allCards.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'qdot' + (i === 0 ? ' on' : '');
+    d.type = 'button';
+    d.setAttribute('aria-label', 'Kutipan ' + (i + 1));
+    d.onclick = () => { qi = i; showQ(); restartTimer(); };
+    qdotsEl.appendChild(d);
+  });
+}
 
-        // Buku Tamu Dummy
-        function submitWish(event) {
-            event.preventDefault();
-            const name = document.getElementById("guestName").value;
-            const message = document.getElementById("guestMessage").value;
-            const newWish = `
-                <div style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px; animation: fadeSlide 0.5s;">
-                    <strong style="color: var(--primary-green);">${name}:</strong><br>
-                    <span style="font-size: 0.9rem;">${message}</span>
-                </div>`;
-            document.getElementById("wishesContainer").insertAdjacentHTML('afterbegin', newWish);
-            document.getElementById("guestName").value = '';
-            document.getElementById("guestMessage").value = '';
-        }
-    </script>
+function showQ() {
+  if (qi >= allCards.length) qi = 0;
+  if (qi < 0) qi = allCards.length - 1;
+  allCards.forEach(c => c.classList.remove('on'));
+  allCards[qi].classList.add('on');
+  document.querySelectorAll('.qdot').forEach((d, i) => d.classList.toggle('on', i === qi));
+}
+
+function qChange(n) { qi += n; showQ(); restartTimer(); }
+
+function restartTimer() {
+  clearInterval(qTimer);
+  qTimer = setInterval(() => { qi++; showQ(); }, 7500);
+}
+
+buildDots();
+showQ();
+restartTimer();
+
+/* BUKU TAMU */
+function sanitize(str) {
+  const el = document.createElement('div');
+  el.textContent = str;
+  return el.innerHTML;
+}
+
+function addWish(e) {
+  e.preventDefault();
+  const nameEl = document.getElementById('guestName');
+  const msgEl  = document.getElementById('guestMsg');
+  const name = nameEl.value.trim();
+  const msg  = msgEl.value.trim();
+  if (!name || !msg) return;
+  const item = document.createElement('div');
+  item.className = 'wi';
+  item.innerHTML = '<p class="wi-name">' + sanitize(name) + '</p><p class="wi-msg">' + sanitize(msg) + '</p>';
+  document.getElementById('wishes-list').prepend(item);
+  nameEl.value = '';
+  msgEl.value = '';
+  nameEl.focus();
+}
+
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
 </body>
 </html>
